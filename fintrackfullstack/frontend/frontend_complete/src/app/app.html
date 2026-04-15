@@ -1,0 +1,13 @@
+@if (api.isLoggedIn()) {
+  <nav class="main-nav">
+    <span class="nav-brand">FinTrack</span>
+    <a routerLink="/dashboard" routerLinkActive="active">Dashboard</a>
+    <a routerLink="/transactions" routerLinkActive="active">Transactions</a>
+    <a routerLink="/goals" routerLinkActive="active">Goals</a>
+    <button class="logout-btn" (click)="logout()">Sign out</button>
+  </nav>
+}
+
+<div class="content">
+  <router-outlet></router-outlet>
+</div>

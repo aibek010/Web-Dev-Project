@@ -1,0 +1,27 @@
+<div class="login-wrapper">
+  <div class="login-card">
+    <h2>Добро пожаловать</h2>
+    <p>Войдите в личный кабинет</p>
+
+    @if (errorMessage) {
+      <div class="error-badge">{{ errorMessage }}</div>
+    }
+
+    <div class="form-field">
+      <label>Логин</label>
+      <input type="text" [(ngModel)]="loginData.username" placeholder="username">
+    </div>
+
+    <div class="form-field">
+      <label>Пароль</label>
+      <input type="password" [(ngModel)]="loginData.password" placeholder="••••••••">
+    </div>
+
+    <button class="btn-login" (click)="onLogin()">Войти</button>
+
+    
+    <div class="login-footer">
+      Нет аккаунта? <a routerLink="/register" style="color: #00d4aa;">Зарегистрироваться</a>
+    </div>  
+  </div>
+</div>
