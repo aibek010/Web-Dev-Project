@@ -6,7 +6,7 @@ from django.contrib.auth.models import User
 class CategorySerializer(serializers.ModelSerializer):
     class Meta:
         model = Category
-        fields = ['id', 'name']  # ИСПРАВЛЕНИЕ 2: убрали user из ответа — незачем отдавать внутренний id
+        fields = ['id', 'name']  
 
 
 class TransactionModelSerializer(serializers.ModelSerializer):
@@ -14,8 +14,7 @@ class TransactionModelSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Transaction
-        # ИСПРАВЛЕНИЕ 1: поле date теперь есть в модели, поэтому ошибки не будет
-        # ИСПРАВЛЕНИЕ 2: user не включён в fields — он задаётся автоматически в view
+       
         fields = ['id', 'amount', 'description', 'transaction_type', 'date', 'category', 'category_name']
 
 
@@ -26,7 +25,7 @@ class MonthlyStatisticsSerializer(serializers.Serializer):
     month = serializers.CharField()
 
 
-# ИСПРАВЛЕНИЕ 4: добавлена регистрация пользователя
+
 class UserRegistrationSerializer(serializers.Serializer):
     username = serializers.CharField(max_length=150)
     email = serializers.EmailField()
@@ -41,7 +40,7 @@ class UserRegistrationSerializer(serializers.Serializer):
         return User.objects.create_user(**validated_data)
 
 
-# ИСПРАВЛЕНИЕ 3: добавлены сериализаторы для Budget и FinancialGoal
+
 class BudgetSerializer(serializers.ModelSerializer):
     class Meta:
         model = Budget
