@@ -1,0 +1,93 @@
+<div class="dashboard">
+  @if (loading) {
+    <div class="state-msg">Загрузка...</div>
+  } @else if (error) {
+    <div class="alert">{{ error }}</div>
+  } @else if (stats) {
+    <div class="dashboard-header">
+      <h1>Financial Summary</h1>
+      <span class="month-label">{{ stats.month }}</span>
+    </div>
+
+    <div class="stats-grid">
+      <div class="stat-card">
+        <div class="stat-label">Balance</div>
+        <div class="stat-value">₸ {{ stats.balance }}</div>
+        <div class="stat-sub">текущий месяц</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-label">Income</div>
+        <div class="stat-value income">₸ {{ stats.total_income }}</div>
+        <div class="stat-sub">получено</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-label">Expenses</div>
+        <div class="stat-value expense">₸ {{ stats.total_expense }}</div>
+        <div class="stat-sub">потрачено</div>
+      </div>
+    </div>
+
+    <!-- Лимит -->
+    <div class="limit-section">
+      <div class="limit-header">
+        <span class="limit-title">Месячный лимит расходов</span>
+        <div class="limit-actions">
+          @if (limit) {
+            <button class="btn-limit-edit" (click)="showLimitModal = true">Изменить</button>
+            <button class="btn-limit-delete" (click)="deleteLimit()">Удалить</button>
+          } @else {
+            <button class="btn-limit-set" (click)="showLimitModal = true">+ Установить лимит</button>
+          }
+        </div>
+      </div>
+      @if (limit) {
+        <div class="limit-info">
+          <span class="limit-spent" [class.over]="limitExceeded">₸ {{ stats.total_expense }}</span>
+          <span class="limit-sep">/</span>
+          <span class="limit-max">₸ {{ limit }}</span>
+        </div>
+        <div class="limit-track">
+          <div class="limit-fill"
+            [style.width]="limitProgress + '%'"
+            [class.fill-danger]="limitExceeded"
+            [class.fill-warn]="!limitExceeded && limitProgress > 70">
+          </div>
+        </div>
+        <div class="limit-percent">{{ limitProgress | number:'1.0-0' }}% использовано</div>
+      }
+    </div>
+
+    @if (limitExceeded) {
+      <div class="alert">
+        <strong>Warning:</strong> Превышен месячный лимит расходов!
+      </div>
+    }
+
+    <!-- График -->
+    <div class="chart-section">
+      <div class="chart-title">Обзор за месяц</div>
+      <div class="chart-wrap">
+        <canvas #chartCanvas></canvas>
+      </div>
+    </div>
+  }
+</div>
+
+@if (showLimitModal) {
+  <div class="modal-overlay" (click)="showLimitModal = false">
+    <div class="modal" (click)="$event.stopPropagation()">
+      <div class="modal-header">
+        <span>Установить лимит</span>
+        <button class="modal-close" (click)="showLimitModal = false">✕</button>
+      </div>
+      <div class="modal-body">
+        <label class="modal-label">Сумма лимита (₸)</label>
+        <input type="number" [(ngModel)]="newLimit" placeholder="например 100000" class="modal-input" min="0">
+      </div>
+      <div class="modal-footer">
+        <button class="btn-cancel" (click)="showLimitModal = false">Отмена</button>
+        <button class="btn-add" (click)="saveLimit()">Сохранить</button>
+      </div>
+    </div>
+  </div>
+}
