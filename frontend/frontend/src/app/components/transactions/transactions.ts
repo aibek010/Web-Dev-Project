@@ -178,7 +178,7 @@ export class TransactionsComponent implements OnInit {
     });
   }
 
-  // Удаление
+  // удаление
   deleteTransaction(id: number) {
     if (!confirm('Удалить эту транзакцию?')) return;
     this.api.deleteTransaction(id).subscribe({
@@ -193,7 +193,7 @@ export class TransactionsComponent implements OnInit {
     });
   }
 
-  // Редактирование
+  // редактирование
   openEditModal(tx: Transaction) {
     this.editTx = { ...tx };
     this.editError = '';
